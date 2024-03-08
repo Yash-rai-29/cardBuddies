@@ -1,14 +1,13 @@
-import React from 'react'
+// Login.js
 
-const Login = ({ isAuthenticated, setIsAuthenticated }) => {
-    const handleLogin = () => {
-        // Perform login logic here
-        // Assuming login is successful
-        setIsAuthenticated(true);
-      };
-    
+import React from 'react';
+import { Link } from 'react-router-dom';
+
+function Login({ isAuthenticated, setIsAuthenticated }) {
+  
+
   return (
-   <>
+    <>
    <div className="flex items-center min-h-screen px-4 sm:px-6 lg:px-8">
    <div className="w-full max-w-md mx-auto space-y-4">
      <div className="text-center">
@@ -44,12 +43,12 @@ const Login = ({ isAuthenticated, setIsAuthenticated }) => {
      </div>
      <div className="text-center text-sm">
        Don't have an account?
-       <a className="underline" href="#">Sign up</a>
+       <a className="underline" href="/signup">Sign up</a>
      </div>
    </div>
  </div>
    </>
-  )
+  );
 }
 
-export default Login
+export default Login;

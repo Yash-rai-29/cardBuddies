@@ -1,20 +1,20 @@
 import React from 'react'
 import { Outlet, Navigate } from 'react-router-dom';
 
-function Authlayout({ isAuthenticated, setIsAuthenticated}) {
-
-
+const RootLayout = ({isAuthenticated, setIsAuthenticated}) => {
   return (
     <>
     { isAuthenticated ? (
-      <Navigate to="/home" />
+      <>
+     <Outlet/>
+     </>
       ) : (
         <>
-        <Outlet/>
+        <Navigate to="/login" />
       </>
     )}
     </>
   )
 }
 
-export default Authlayout
+export default RootLayout
