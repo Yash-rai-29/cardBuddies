@@ -6,7 +6,7 @@ const admin = require("firebase-admin");
 const axios = require("axios");
 const bcrypt = require("bcrypt"); // Import bcrypt module
 
-const serviceAccount = require("./etc/secrets/firebase-adminsdk.json");
+const serviceAccount = require("/etc/secrets/firebase-adminsdk.json");
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
