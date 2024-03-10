@@ -1,12 +1,13 @@
 import React from 'react'
 import { Outlet, Navigate } from 'react-router-dom';
-
-const RootLayout = ({isAuthenticated, setIsAuthenticated}) => {
+import Navbar from './Navbar';
+const RootLayout = ({isAuthenticated, AllowUser, setIsAuthenticated}) => {
   return (
     <>
-    { isAuthenticated ? (
+    { isAuthenticated && AllowUser ? (
       <>
-     <Outlet/>
+      <Navbar setIsAuthenticated={setIsAuthenticated}/>
+      <Outlet/>
      </>
       ) : (
         <>
