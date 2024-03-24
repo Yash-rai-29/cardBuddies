@@ -10,7 +10,7 @@
 /backend/firebase-adminsdk.json
 # testing
 /coverage
-
+/cardbuddies.json
 # production
 /build
 

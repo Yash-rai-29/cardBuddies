@@ -21,7 +21,7 @@ function Login({ setIsAuthenticated }) {
         autoClose: 5000,
       });
       // Set the UUID as a cookie
-      Cookies.set('user', user);
+      Cookies.set('userId', user.uid);
       Cookies.set('accessToken', user.accessToken);
       setIsAuthenticated(true);
     } catch (error) {

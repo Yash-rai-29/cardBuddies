@@ -6,7 +6,7 @@ const admin = require("firebase-admin");
 const axios = require("axios");
 const bcrypt = require("bcrypt"); // Import bcrypt module
 
-const serviceAccount = require("/etc/secrets/firebase-adminsdk.json");
+const serviceAccount = require("./cardbuddies.json");
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
@@ -116,7 +116,6 @@ app.post("/signin", async (req, res) => {
 app.post("/verify-user", async (req, res) => {
   try {
     const { accessToken } = req.body;
-
     // Verify the access token using Firebase Admin SDK
     const decodedToken = await admin.auth().verifyIdToken(accessToken);
     const uid = decodedToken.uid;
@@ -135,6 +134,61 @@ app.post("/verify-user", async (req, res) => {
     res.status(401).json({ message: "Invalid access token" });
   }
 });
+
+// API endpoint to add card details
+app.post("/add-card", async (req, res) => {
+  try {
+    const { userId, cardDetails } = req.body;
+
+    // Check if userId and cardDetails are provided
+    if (!userId || !cardDetails) {
+      return res.status(400).json({ error: "userId and cardDetails are required" });
+    }
+
+    // Reference to the Firebase database under the user's node
+    const userRef = admin.database().ref(`/users/${userId}`);
+    const cards = admin.database().ref(`/cards/${userId}`);
+
+    // Push card details under the user's node
+    const newCardRef = await userRef.child("cards").push(cardDetails);
+    const newCard = await cards.child("cards").push(cardDetails);
+
+    return res.status(200).json({ message: "Card added successfully", cardId: newCardRef.key });
+  } catch (error) {
+    console.error("Error adding card:", error);
+    return res.status(500).json({ error: "Internal server error" });
+  }
+});
+app.get("/get-cards", async (req, res) => {
+  try {
+    // Reference to the cards node
+    const cardsRef = admin.database().ref(`/cards`);
+
+    // Retrieve cards data
+    const snapshot = await cardsRef.once("value");
+    const cardsData = snapshot.val();
+
+    // Check if cardsData is not empty
+    if (!cardsData) {
+      return res.status(404).json({ error: "No cards found" });
+    }
+
+    const usersWithCards = {};
+
+    // Loop through each user's cards
+    Object.keys(cardsData).forEach(userId => {
+      const userCards = Object.values(cardsData[userId]);
+      usersWithCards[userId] = userCards;
+    });
+
+    return res.status(200).json({ usersWithCards });
+  } catch (error) {
+    console.error("Error fetching cards:", error);
+    return res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+
 
 // Start server
 app.listen(PORT, () => {

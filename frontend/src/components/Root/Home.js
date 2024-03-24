@@ -1,121 +1,110 @@
-import React, { useState, useEffect } from "react";
-import { Button, Grid, Slide } from "@mui/material";
-import Card from "@mui/material/Card";
-import CardHeader from "@mui/material/CardHeader";
-import CardContent from "@mui/material/CardContent";
-import CardActions from "@mui/material/CardActions";
-import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
-import ChevronRightIcon from "@mui/icons-material/ChevronRight";
-import { useNavigate } from 'react-router-dom';
+import React from "react";
+import { Button, Container, Paper, Grid, TextField, Typography } from "@mui/material";
 
 export default function Home() {
-  const [showCardIndex, setShowCardIndex] = useState(0);
-  const [transitioning, setTransitioning] = useState(false); // State to control the sliding animation
-  const navigate = useNavigate();
-  const [cardData, setCardData] = useState([
-    {
-      title: "I can help buyers grab that deal",
-      content:
-        "Find someone who needs my card to avail a specific online deal.",
-      actions: [
-        { label: "Add cards", variant: "outlined" },
-        {
-          label: "See Available Cards",
-          variant: "contained",
-          color: "primary",
-          link: "/account/profile", // Link to the available cards page
-        },
-      ],
-    },
-    {
-      title: "Another card title",
-      content: "Another card content",
-      actions: [
-        { label: "Custom Action", variant: "contained", color: "secondary" },
-      ],
-    },
-    // Add more card data objects as needed
-  ]);
-
-  const toggleCard = (direction) => {
-    setTransitioning(true); // Trigger the sliding animation
-    setTimeout(() => {
-      setTransitioning(false); // Reset the transitioning state after the transition completes
-      if (direction === "prev") {
-        setShowCardIndex((prevIndex) =>
-          prevIndex === 0 ? cardData.length - 1 : prevIndex - 1
-        );
-      } else {
-        setShowCardIndex((prevIndex) =>
-          prevIndex === cardData.length - 1 ? 0 : prevIndex + 1
-        );
-      }
-    }, 300); // Adjust the delay to match the transition duration in milliseconds
-  };
-
-  // Function to automatically switch cards after 5 seconds
-  useEffect(() => {
-    const timer = setInterval(() => {
-      toggleCard("next");
-    }, 5000);
-    return () => clearInterval(timer);
-  }, [showCardIndex]);
 
   return (
-    <div className="bg-blue-100 px-8 py-16">
+    <>
+    <div className="bg-black px-8 py-16">
       <div className="max-w-7xl mx-auto">
-        <Grid container spacing={2} alignItems="center">
-          <Grid item xs={12} md={6}>
-            <div>
-              <h1 className="text-4xl font-bold text-gray-800 mb-4">
-                Find right cards
-              </h1>
-              <p className="text-lg text-gray-600 mb-8">
-                Never miss out on any online offer on any bank cards.
-              </p>
-            </div>
+      <section style={{ backgroundColor: '#000', color: '#fff', padding: '20px 10px' }}>
+      <Grid container alignItems="center" justify="space-between">
+        <Grid item xs={12} md={6} style={{ marginBottom: '10px' }}>
+        <Typography variant="h3" style={{ fontWeight: 'bold', marginBottom: '20px' }}>
+            Discover exclusive credit card offers from top banks
+          </Typography>
+          <Typography variant="subtitle1" style={{ marginBottom: '20px' }}>
+            Explore offers by bank, category or discounts
+          </Typography>
+          <TextField 
+            variant="outlined" 
+            fullWidth 
+            placeholder="Find your perfect credit card offer here"
+            InputProps={{
+              style: { color: '#fff', borderColor: '#fff' },
+              startAdornment: null,
+            }}
+            style={{ borderColor: 'white' }}
+          />
+          <Button 
+            variant="contained" 
+            color="primary" 
+            style={{ marginTop: '10px' }}
+          >
+            Find
+          </Button>
+        </Grid>
+        <Grid item xs={12} md={6}>
+          <img
+            alt="Credit Card Offers"
+            src="/hero.png"
+            style={{
+              maxWidth: '100%',
+              height: 'auto',
+              display: 'block',
+              borderRadius: '10px',
+              boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.5)',
+            }}
+          />
+        </Grid>
+      </Grid>
+    </section>
+    <section style={{ backgroundColor: '#121212', color: '#fff', padding: '80px 0' }}>
+      <Container maxWidth="lg">
+        <Typography variant="h2" align="center" gutterBottom>
+          How CardBuddies works
+        </Typography>
+        <Grid container spacing={4} justifyContent="center">
+          <Grid item xs={12} sm={6} md={4}>
+            <Paper elevation={3} style={{ padding: '20px', textAlign: 'center', height: '100%' }}>
+              <img
+                alt="Step 1"
+                src="/1.png"
+                style={{ width: '100%', height: 'auto', marginBottom: '20px' }}
+              />
+              <Typography variant="h3" gutterBottom>
+                Step 1
+              </Typography>
+              <Typography paragraph>
+                Enter your card details securely. Start exploring exclusive deals today!
+              </Typography>
+            </Paper>
           </Grid>
-          <Grid item xs={12} md={6}>
-            <div className="flex flex-col space-y-6 relative">
-              {/* Slide component to display cards */}
-              <Slide direction={transitioning ? "left" : "right"} in={true} mountOnEnter unmountOnExit>
-                <Card className="bg-white shadow-lg p-6">
-                  <CardHeader title={cardData[showCardIndex].title} />
-                  <CardContent>{cardData[showCardIndex].content}</CardContent>
-                  {/* Card actions */}
-                  <CardActions>
-                    {cardData[showCardIndex].actions.map((action, index) => (
-                      <Button
-                        key={index}
-                        variant={action.variant}
-                        color={action.color}
-                        onClick={() => {
-                          if (action.link) {
-                            navigate(action.link);
-                          }
-                        }}
-                      >
-                        {action.label}
-                      </Button>
-                    ))}
-                  </CardActions>
-                </Card>
-              </Slide>
-              {/* Navigation icons */}
-              <div className="absolute top-1/2 transform -translate-y-1/2 left-0 right-0 flex justify-between">
-                <ChevronLeftIcon
-                  onClick={() => toggleCard("prev")}
-                  className="text-gray-600 h-6 w-6 cursor-pointer"
-                />
-                <ChevronRightIcon
-                  onClick={() => toggleCard("next")}
-                  className="text-gray-600 h-6 w-6 cursor-pointer"
-                />
-              </div>
-            </div>
+          <Grid item xs={12} sm={6} md={4}>
+            <Paper elevation={3} style={{ padding: '20px', textAlign: 'center', height: '100%' }}>
+              <img
+                alt="Step 2"
+                src="/2.png"
+                style={{ width: '100%', height: 'auto', marginBottom: '20px' }}
+              />
+              <Typography variant="h3" gutterBottom>
+                Step 2
+              </Typography>
+              <Typography paragraph>
+                Choose an offer and complete the transaction. Enjoy the benefits of special discounts.
+              </Typography>
+            </Paper>
+          </Grid>
+          <Grid item xs={12} sm={6} md={4}>
+            <Paper elevation={3} style={{ padding: '20px', textAlign: 'center', height: '100%' }}>
+              <img
+                alt="Step 3"
+                src="/3.png"
+                style={{ width: '100%', height: 'auto', marginBottom: '20px' }}
+              />
+              <Typography variant="h3" gutterBottom>
+                Step 3
+              </Typography>
+              <Typography paragraph>
+                Redeem your offer. Sit back and relax as your savings grow!
+              </Typography>
+            </Paper>
           </Grid>
         </Grid>
-      </div>
+      </Container>
+      </section>
     </div>
+    </div>
+  </>
   );
 }

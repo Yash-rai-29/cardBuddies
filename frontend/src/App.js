@@ -8,6 +8,8 @@ import RootLayout from './components/Root/RootLayout';
 import Cookies from "js-cookie";
 import LoadingSpinner from './LoadingSpinner'
 import Profile from './components/Root/Account/Profile';
+import AddCard from './components/Root/Card/AddCard';
+import AvailableCard from './components/Root/Card/AvailableCard';
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -69,6 +71,8 @@ function App() {
         <Route element={<RootLayout isAuthenticated={isAuthenticated} setIsAuthenticated={setIsAuthenticated} AllowUser={AllowUser} />}>
           <Route path='/' element={<Home />} />
           <Route path='/account/profile' element={<Profile />} />
+          <Route path='/add-card' element={<AddCard />} />
+          <Route path='/avaiable-card' element={<AvailableCard />} />
         </Route> 
 
         {/* Redirect to login page if not authenticated */}
